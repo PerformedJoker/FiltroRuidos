@@ -1,5 +1,7 @@
 package kripleyFunction;
 
+import featuresExtraction.Statistical;
+
 public class kRipleyFunction {
 
 
@@ -25,7 +27,7 @@ public static boolean gamaCheck(int i,int j, int raio){
 
 
 
-public static int convolucaoMask(int[][] matriz, int raio, int x, int y, boolean ripleyOuModa ){
+public static float convolucaoMask(float[][] matriz, int raio, int x, int y, boolean ripleyOuModa ){
 	int m = matriz.length;
 	int n = matriz[0].length;
 	int min_X = x-raio;
@@ -34,12 +36,13 @@ public static int convolucaoMask(int[][] matriz, int raio, int x, int y, boolean
 	int max_Y = raio+y;	
 	int total_X = min_X + max_X;
 	int total_Y = min_Y + max_Y;
-	int elementoatual =  matriz[x][y];
-	int repeticoesTotalElemento, modaDaMascara,countElementoNaMascara ;
-	int[][] mascara = iniciaMatriz(total_X,total_Y);
+	float valorElementoatual =  matriz[x][y];
+	float modaDaMascara;
+	int repeticoesTotalElemento,countElementoNaMascara ;
+	float[][] mascara = iniciaMatriz(total_X,total_Y);
 
 	int numeroElementosMatriz = m*n;
-	int[][] bufferModa = new int[m][n];
+//	float[][] bufferModa = new float[m][n];
 
 	for(int i = min_X; i<max_X;i++){
 		for(int j = min_Y; j< max_Y ;j++){
@@ -51,24 +54,32 @@ public static int convolucaoMask(int[][] matriz, int raio, int x, int y, boolean
 			}
 		}
 	}
-	repeticoesTotalElemento = numeroRepeticaoElemento(matriz,elementoatual);
-	countElementoNaMascara = numeroRepeticaoElemento(mascara,elementoatual);
-	modaDaMascara = moda();
-	int resultado = (countElementoNaMascara* repeticoesTotalElemento)/numeroElementosMatriz; 
+	repeticoesTotalElemento = numeroRepeticaoElemento(matriz,valorElementoatual);
+	countElementoNaMascara = numeroRepeticaoElemento(mascara,valorElementoatual);
+	modaDaMascara = Statistical.mode(mascara);
+	float resultado = (countElementoNaMascara*repeticoesTotalElemento)/numeroElementosMatriz; 
 
 	if(ripleyOuModa){
 		return resultado; 
 	}else{
 		return modaDaMascara;
 	}
-
 	
 }
 
+public static float[][] geraMatrizKripley(float[][] matriz, int raio){
+	float[][] matrizK = new float[matriz.length][matriz[0].length];
+	for(int i = 0; i<matriz.length;i++) {
+		for(int j = 0; j<matriz[0].length; j++) {
+			matrizK[i][j] = convolucaoMask(matriz, raio, i, j, true);
+		}
+	}
+	
+	return matrizK;
+}
 
-
-private static int[][] iniciaMatriz(int total_X, int total_Y){
-	int[][] matriz = new int [total_X][total_Y];
+private static float[][] iniciaMatriz(int total_X, int total_Y){
+	float[][] matriz = new float [total_X][total_Y];
 	for(int i = 0; i<matriz.length;i++){
 		for (int j = 0;j<matriz[0].length ;j++ ) {
 			matriz[i][j] = -1;
@@ -78,7 +89,7 @@ private static int[][] iniciaMatriz(int total_X, int total_Y){
 return matriz;
 }
 
-private static int numeroRepeticaoElemento(int[][]matriz,int elemento){
+private static int numeroRepeticaoElemento(float[][]matriz,float elemento){
 	int count = 0;
 	for(int i = 0;i<matriz.length;i++){
 		for(int j = 0; j<matriz[0].length; j++){
@@ -92,8 +103,5 @@ private static int numeroRepeticaoElemento(int[][]matriz,int elemento){
 }
 
 
-private static int moda(){
-	return 1;
-}
 
 }
