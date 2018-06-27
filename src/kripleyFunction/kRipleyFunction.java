@@ -5,25 +5,21 @@ import featuresExtraction.Statistical;
 public class kRipleyFunction {
 
 
-
-
-public static boolean checkBoudingBox(int x, int y, int width, int heigth){
+public static float[][] remocaoDeRuidoBSD(float[][] matriz, int raio, int threshold ){
 	
-	if( x >= 0  && x < heigth  && y >= 0 && y<width ){
-		return true;
-	}else{
-		return false;
+	float[][] matrizK = geraMatrizKripley(matriz, raio);
+	
+	for(int i = 0; i<matrizK.length;i++) {
+		for(int j = 0; j<matrizK[0].length;j++) {
+			if(matrizK[i][j]<threshold){
+				matrizK[i][j] = convolucaoMask(matriz, raio, i, j, false);
+			}
+		}
 	}
-
+	
+	return matrizK;
 }
 
-public static boolean gamaCheck(int i,int j, int raio){
-	if((i-j)<=raio){
-		return true;
-	}else{
-		return false;
-	}
-}
 
 
 
@@ -100,6 +96,24 @@ private static int numeroRepeticaoElemento(float[][]matriz,float elemento){
 	}
 
 	return count;
+}
+
+public static boolean checkBoudingBox(int x, int y, int width, int heigth){
+	
+	if( x >= 0  && x < heigth  && y >= 0 && y<width ){
+		return true;
+	}else{
+		return false;
+	}
+
+}
+
+public static boolean gamaCheck(int i,int j, int raio){
+	if((i-j)<=raio){
+		return true;
+	}else{
+		return false;
+	}
 }
 
 
