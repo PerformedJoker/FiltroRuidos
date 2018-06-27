@@ -27,14 +27,7 @@ public static float convolucaoMask(float[][] matriz, int raio, int x, int y, boo
 	int m = matriz.length;
 	int n = matriz[0].length;
 	int tamanhoMascara = 2*raio+1;
-	
-	
-	int min_x = x-raio;
-	int min_y =y-raio;
-	
-	System.out.println("O valor min em x é: "+ min_x);
-	System.out.println("O valor min em y é: "+ min_y);
-	
+
 	float valorElementoatual =  matriz[x][y];
 	float modaDaMascara;
 	int repeticoesTotalElemento,countElementoNaMascara ;
@@ -43,12 +36,11 @@ public static float convolucaoMask(float[][] matriz, int raio, int x, int y, boo
 	int numeroElementosMatriz = m*n;
 //	float[][] bufferModa = new float[m][n];
 
-	for(int i = min_x; i<tamanhoMascara;i++){
+	for(int i = x-raio; i<=x+raio;i++){
 		System.out.println("valor de i"+i );
-		for(int j = min_y; j< tamanhoMascara ;j++){
+		for(int j = y-raio; j<=y+raio ;j++){
 			System.out.println("valor de j"+j );
 			if(checkBoudingBox(i,j,m,n)){
-//				System.out.println("entrou checa fronteira quando o i e j eram: "+i+j);
 				if(gamaCheck(i,j,raio)){
 					System.out.println("entrou quando o i e j eram: "+i+j);
 					mascara[i][j] = matriz[i][j];	
@@ -61,7 +53,7 @@ public static float convolucaoMask(float[][] matriz, int raio, int x, int y, boo
 	repeticoesTotalElemento = numeroRepeticaoElemento(matriz,valorElementoatual);
 	countElementoNaMascara = numeroRepeticaoElemento(mascara,valorElementoatual);
 	modaDaMascara = Statistical.mode(mascara);
-	float resultado = (countElementoNaMascara*repeticoesTotalElemento)/numeroElementosMatriz; 
+	float resultado = (float)(countElementoNaMascara*repeticoesTotalElemento)/numeroElementosMatriz; 
 
 	if(ripleyOuModa){
 		return resultado; 
@@ -74,7 +66,9 @@ public static float convolucaoMask(float[][] matriz, int raio, int x, int y, boo
 public static float[][] geraMatrizKripley(float[][] matriz, int raio){
 	float[][] matrizK = new float[matriz.length][matriz[0].length];
 	for(int i = 0; i<matriz.length;i++) {
+		System.out.println("i na funçao de gera matriz "+i);
 		for(int j = 0; j<matriz[0].length; j++) {
+			System.out.println("j na funçao de gera matriz "+j);
 			matrizK[i][j] = convolucaoMask(matriz, raio, i, j, true);
 		}
 	}
@@ -117,7 +111,9 @@ public static boolean checkBoudingBox(int x, int y, int width, int heigth){
 }
 
 public static boolean gamaCheck(int i,int j, int raio){
-	if((i-j)<=raio){
+	int linha = i;
+	int coluna = j;
+	if((linha-coluna)<=raio){
 		return true;
 	}else{
 		return false;
