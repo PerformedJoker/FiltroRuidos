@@ -26,30 +26,38 @@ public static float[][] remocaoDeRuidoBSD(float[][] matriz, int raio, int thresh
 public static float convolucaoMask(float[][] matriz, int raio, int x, int y, boolean ripleyOuModa ){
 	int m = matriz.length;
 	int n = matriz[0].length;
-	int min_X = x-raio;
-	int max_X = raio+x;
-	int min_Y = y-raio;
-	int max_Y = raio+y;	
-	int total_X = min_X + max_X;
-	int total_Y = min_Y + max_Y;
+	int tamanhoMascara = 2*raio+1;
+	
+	
+	int min_x = x-raio;
+	int min_y =y-raio;
+	
+	System.out.println("O valor min em x é: "+ min_x);
+	System.out.println("O valor min em y é: "+ min_y);
+	
 	float valorElementoatual =  matriz[x][y];
 	float modaDaMascara;
 	int repeticoesTotalElemento,countElementoNaMascara ;
-	float[][] mascara = iniciaMatriz(total_X,total_Y);
-
+	float[][] mascara = iniciaMatriz(tamanhoMascara,tamanhoMascara);
+	
 	int numeroElementosMatriz = m*n;
 //	float[][] bufferModa = new float[m][n];
 
-	for(int i = min_X; i<max_X;i++){
-		for(int j = min_Y; j< max_Y ;j++){
-			
+	for(int i = min_x; i<tamanhoMascara;i++){
+		System.out.println("valor de i"+i );
+		for(int j = min_y; j< tamanhoMascara ;j++){
+			System.out.println("valor de j"+j );
 			if(checkBoudingBox(i,j,m,n)){
+//				System.out.println("entrou checa fronteira quando o i e j eram: "+i+j);
 				if(gamaCheck(i,j,raio)){
+					System.out.println("entrou quando o i e j eram: "+i+j);
 					mascara[i][j] = matriz[i][j];	
 				}
 			}
 		}
 	}
+	imprimeMatriz(mascara);
+	
 	repeticoesTotalElemento = numeroRepeticaoElemento(matriz,valorElementoatual);
 	countElementoNaMascara = numeroRepeticaoElemento(mascara,valorElementoatual);
 	modaDaMascara = Statistical.mode(mascara);
@@ -116,6 +124,19 @@ public static boolean gamaCheck(int i,int j, int raio){
 	}
 }
 
-
+public static void imprimeMatriz(float[][] matriz) {
+	for(int i = 0; i< matriz.length; i++) {
+		
+		for(int j = 0; j< matriz[0].length; j++) {
+			if(matriz[i][j] == 0) {
+				System.out.print(" | "+matriz[i][j]+" ");
+			}else {
+				System.out.print(" | "+matriz[i][j]);
+			}
+		} 
+		
+		System.out.println(" |");
+	}
+}
 
 }
