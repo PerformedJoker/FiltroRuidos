@@ -42,7 +42,12 @@ public class main {
         matrizTeste[3][3] =  10;
         
 //        kRipleyFunction.imprimeMatriz(matrizTeste);
-        kRipleyFunction.imprimeMatriz(kRipleyFunction.geraMatrizKripley(matrizTeste,1));
-    }
+//        kRipleyFunction.imprimeMatriz(kRipleyFunction.geraMatrizKripley(matrizTeste,1));
+        
+//        System.out.println("matriz de Valores");
+//        kRipleyFunction.imprimeMatriz(kRipleyFunction.matrizDeValoresInteiros(matrizTeste, 1, 0.5F));
+        kRipleyFunction.remocaoDeRuidoBSD(matrizTeste, 1, 0.6f);
+        System.err.println("\n final");
+        		}
     
 }
