@@ -11,25 +11,35 @@ public static float[][] remocaoDeRuidoBSD(float[][] matriz, int raio, float thre
 	imprimeMatriz(matriz);
 	
 	
-	
+	float[][] teste = matriz;
 	float[][] matrizK = geraMatrizKripley(matriz, raio);
+//	
+//	System.out.println("\nMatriz de K  Abaixo");
+//	imprimeMatriz(matrizK);
 	
-	System.out.println("\nMatriz de K  Abaixo");
-	imprimeMatriz(matrizK);
-	
+	System.out.println("\nMatriz Depois do geraMatrizK ");
+	imprimeMatriz(matriz);
 	
 	
 	float[][] matrizFinal = matriz;
+	
+	//Verificar se o valor que está na matriz de K é inferior ao threshold e aplica a moda a essa vizinhança
 	for(int i = 0; i<matrizK.length;i++) {
 		for(int j = 0; j<matrizK[0].length;j++) {
 			if(matrizK[i][j]<threshold){
-				matrizFinal[i][j] = convolucaoMask(matriz, raio, i, j, false);
+				matrizFinal[i][j] = retornaModaDoElemento(teste, raio, i, j);
 			}
 		}
 	}
 	
+	System.out.println("\nMatriz Inicial resultante Abaixo");
+	imprimeMatriz(matriz);
+//	
+	
 	System.out.println("\nMatriz Final Abaixo");
 	imprimeMatriz(matrizFinal);
+	
+	
 	
 //	imprimeMatriz(matrizDeValoresInteiros(matrizFinal, raio, threshold));
 //	
@@ -46,7 +56,7 @@ public static float[][] remocaoDeRuidoBSD(float[][] matriz, int raio, float thre
 	return matrizK;
 }
 
-public static float[][] matrizDeValoresInteiros(float[][] matriz, int raio, float threshold ){
+/*public static float[][] matrizDeValoresInteiros(float[][] matriz, int raio, float threshold ){
 	
 	float[][] matrizK = remocaoDeRuidoBSD(matriz, raio,1);
 	float[][] matrizValores = matriz;
@@ -63,17 +73,49 @@ public static float[][] matrizDeValoresInteiros(float[][] matriz, int raio, floa
 		}
 	}
 	return matrizValores;
+}*/
+
+public static float retornaModaDoElemento(float[][] matriz, int raio, int x, int y) {
+	int m = matriz.length;
+	int n = matriz[0].length;
+	int tamanhoMascara = 2*raio+1;
+	System.out.println("tamanho da mascara: "+tamanhoMascara);
+	float modaDaMascara;
+	float[][] matrizAuxiliar = matriz;
+	float[][] mascara = iniciaMatriz(tamanhoMascara,tamanhoMascara);
+	int iLinha = 0, jColuna =0;
+	System.out.println("\nMASCARA ANTES DO LAÇO");
+	imprimeMatriz(mascara);
+	
+	for(int i = x-raio; i<=x+raio;i++){
+		jColuna = 0;
+		for(int j = y-raio; j<=y+raio ;j++){
+			if((i>=0 && i<m) && (j>=0 && j<n) ){
+					mascara[iLinha][jColuna] = matrizAuxiliar[i][j];	
+				}
+			jColuna++;
+			}
+		iLinha++;
+	}
+	
+	iLinha = 0;
+	jColuna =0;
+	
+	System.out.println("\nMASCARA DA MODA");
+	imprimeMatriz(mascara);
+	modaDaMascara = Statistical.mode(mascara,true);//Ignorando os zeros
+	return modaDaMascara;
 }
 
-
-public static float convolucaoMask(float[][] matriz, int raio, int x, int y, boolean ripleyOuModa ){
+public static float convolucaoMask(float[][] matriz, int raio, int x, int y){
 	int m = matriz.length;
 	int n = matriz[0].length;
 	int tamanhoMascara = 2*raio+1;
 
 	float valorElementoatual =  matriz[x][y];
-	float modaDaMascara;
+//	float modaDaMascara;
 	int repeticoesTotalElemento,countElementoNaMascara ;
+	float[][] matrizAuxiliar = matriz;
 	float[][] mascara = iniciaMatriz(tamanhoMascara,tamanhoMascara);
 	int iLinha = 0, jColuna =0;
 //	mascara[tamanhoMascara/2][tamanhoMascara/2] = valorElementoatual;
@@ -90,7 +132,7 @@ public static float convolucaoMask(float[][] matriz, int raio, int x, int y, boo
 			if((i>=0 && i<m) && (j>=0 && j<n) ){
 				
 //				System.out.println("i linha "+ iLinha+ "jColuna "+ jColuna);
-					mascara[iLinha][jColuna] = matriz[i][j];	
+					mascara[iLinha][jColuna] = matrizAuxiliar[i][j];	
 				}
 			jColuna++;
 			}
@@ -100,36 +142,17 @@ public static float convolucaoMask(float[][] matriz, int raio, int x, int y, boo
 	iLinha = 0;
 	jColuna =0;
 	
-//	float[][] bufferModa = new float[m][n];
-
-//	for(int i = x-raio; i<=x+raio;i++){
-//		System.out.println("valor de i"+i );
-//		for(int j = y-raio; j<=y+raio ;j++){
-//			System.out.println("valor de j"+j );
-//			if(checkBoudingBox(i,j,m,n)){
-//				if(gamaCheck(i,j,raio)){
-//					System.out.println("entrou quando o i e j eram: "+i+j);
-//					mascara[i][j] = matriz[i][j];	
-//				}
-//			}
-//		}
-//	}
-	
-//	System.out.println("\nImprimindo a Mascara");
-//	imprimeMatriz(mascara);
-//	System.out.println("\n");
-//	
 	
 	repeticoesTotalElemento = numeroRepeticaoElemento(matriz,valorElementoatual);
 	countElementoNaMascara = numeroRepeticaoElemento(mascara,valorElementoatual);
-	modaDaMascara = Statistical.mode(mascara,true);//Ignorando os zeros
+	
 	float resultado = (float)(countElementoNaMascara*repeticoesTotalElemento)/numeroElementosMatriz; 
 
-	if(ripleyOuModa){
+//	if(ripleyOuModa){
 		return resultado; 
-	}else{
-		return modaDaMascara;
-	}
+//	}else{
+//		return modaDaMascara;
+//	}
 	
 }
 
@@ -139,7 +162,7 @@ public static float[][] geraMatrizKripley(float[][] matriz, int raio){
 //		System.out.println("i na funcao de gera matriz "+i);
 		for(int j = 0; j<matriz[0].length; j++) {
 //			System.out.println("j na funcao de gera matriz "+j);
-			matrizK[i][j] = convolucaoMask(matriz, raio, i, j, true);
+			matrizK[i][j] = convolucaoMask(matriz, raio, i, j);
 		}
 	}
 	
@@ -150,13 +173,13 @@ public static float[][] geraMatrizKripley(float[][] matriz, int raio){
 
 
 private static float[][] iniciaMatriz(int total_X, int total_Y){
-	float[][] matriz = new float [total_X][total_Y];
-	for(int i = 0; i<matriz.length;i++){
-		for (int j = 0;j<matriz[0].length ;j++ ) {
-			matriz[i][j] = 0;
+	float[][] matrizFinal = new float [total_X][total_Y];
+	for(int i = 0; i<matrizFinal.length;i++){
+		for (int j = 0;j<matrizFinal[0].length ;j++ ) {
+			matrizFinal[i][j] = 0;
 					}
 	}
-return matriz;
+return matrizFinal;
 }
 
 private static int numeroRepeticaoElemento(float[][]matriz,float elemento){
