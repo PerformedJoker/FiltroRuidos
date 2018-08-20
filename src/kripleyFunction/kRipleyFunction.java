@@ -122,7 +122,7 @@ public static float convolucaoMask(float[][] matriz, int raio, int x, int y, boo
 	
 	repeticoesTotalElemento = numeroRepeticaoElemento(matriz,valorElementoatual);
 	countElementoNaMascara = numeroRepeticaoElemento(mascara,valorElementoatual);
-	modaDaMascara = Statistical.mode(mascara,true);
+	modaDaMascara = Statistical.mode(mascara,true);//Ignorando os zeros
 	float resultado = (float)(countElementoNaMascara*repeticoesTotalElemento)/numeroElementosMatriz; 
 
 	if(ripleyOuModa){
