@@ -9,54 +9,23 @@ public static int remocaoDeRuidoBSD(float[][] matriz, int raio, float threshold)
 	
 	System.out.println("\nMatriz Inicial  Abaixo");
 	imprimeMatriz(matriz);
-	
-	float[][] MatrizAux = matriz;
+	float[][] MatrizAux = copiaMatriz(matriz);
 	float[][] matrizK = geraMatrizKripley(MatrizAux, raio);
-//	
-//	System.out.println("\nMatriz de K  Abaixo");
-//	imprimeMatriz(matrizK);
-	
-	System.out.println("\nMatriz Depois do geraMatrizK ");
-	imprimeMatriz(matriz);
-	
-	
-	float[][] matrizDePixels = matriz;
-	float[][] matrizAuxiliar = iniciaMatrizValorNegativo(matriz.length, matriz[0].length);
-	int limite = -1;
-	System.out.println("\nMatriz Final Antes do laço");
-	imprimeMatriz(matrizDePixels);
-	
+	System.out.println("\nMatriz de K  Abaixo");
+	imprimeMatriz(matrizK);
+	float[][] matrizDePixels = copiaMatriz(matriz);
 	//Verificar se o valor que está na matriz de K é inferior ao threshold e aplica a moda a essa vizinhança
 	for(int i = 0; i<matrizK.length;i++) {
 		for(int j = 0; j<matrizK[0].length;j++) {
 			if(matrizK[i][j]<threshold){
-				System.out.println("valor de m[i][j]: "+matriz[i][j]+"\n limiar : "+threshold);
-				System.out.println("\nMatriz auxiliar na iteração ["+i+"]["+j+"]");
-				imprimeMatriz(matrizAuxiliar);
-				matrizAuxiliar[i][j] = retornaModaDoElemento(matriz, raio, i, j);
+//				System.out.println("valor de m[i][j]: "+matriz[i][j]+"\n limiar : "+threshold);
+//				System.out.println("\nMatriz auxiliar na iteração ["+i+"]["+j+"]");
+				matrizDePixels[i][j] = retornaModaDoElemento(matriz, raio, i, j);
 			}
 		}
 	}
-
-	
-	for(int i = 0; i<matrizK.length;i++) {
-		for(int j = 0; j<matrizK[0].length;j++) {
-			if(matrizAuxiliar[i][j]>limite){
-				matrizDePixels[i][j] = matrizAuxiliar[i][j];
-			}
-		}
-	}
-	
-	System.out.println("\nMatriz de Gambiarra Abaixo");
-	imprimeMatriz(matrizAuxiliar);
-	
-	System.out.println("\nMatriz Inicial resultante Abaixo (Deveria ser a Inicial mas sobrescreveu)");
-	imprimeMatriz(matriz);
-//	
-	
-	System.out.println("\nMatriz Final de pixels Abaixo( matriz que me interessa)");
+	System.out.println("\nMatriz Final de pixels Abaixo");
 	imprimeMatriz(matrizDePixels);
-	
 	return 0;
 }
 
@@ -99,49 +68,28 @@ public static float convolucaoMask(float[][] matriz, int raio, int x, int y){
 	int m = matriz.length;
 	int n = matriz[0].length;
 	int tamanhoMascara = 2*raio+1;
-
 	float valorElementoatual =  matriz[x][y];
-//	float modaDaMascara;
 	int repeticoesTotalElemento,countElementoNaMascara ;
 	float[][] matrizAuxiliar = matriz;
 	float[][] mascara = iniciaMatriz(tamanhoMascara,tamanhoMascara);
 	int iLinha = 0, jColuna =0;
-//	mascara[tamanhoMascara/2][tamanhoMascara/2] = valorElementoatual;
 	int numeroElementosMatriz = m*n;
-	
-	
 	for(int i = x-raio; i<=x+raio;i++){
-//		System.out.println("valor de i"+i );
-		
 		jColuna = 0;
 		for(int j = y-raio; j<=y+raio ;j++){
-			
-//			System.out.println("valor de j"+j );
 			if((i>=0 && i<m) && (j>=0 && j<n) ){
-				
-//				System.out.println("i linha "+ iLinha+ "jColuna "+ jColuna);
 					mascara[iLinha][jColuna] = matrizAuxiliar[i][j];	
 				}
 			jColuna++;
 			}
 		iLinha++;
 	}
-	
 	iLinha = 0;
 	jColuna =0;
-	
-	
 	repeticoesTotalElemento = numeroRepeticaoElemento(matrizAuxiliar,valorElementoatual);
 	countElementoNaMascara = numeroRepeticaoElemento(mascara,valorElementoatual);
-	
 	float resultado = (float)(countElementoNaMascara*repeticoesTotalElemento)/numeroElementosMatriz; 
-
-//	if(ripleyOuModa){
 		return resultado; 
-//	}else{
-//		return modaDaMascara;
-//	}
-	
 }
 
 public static float[][] geraMatrizKripley(float[][] matriz, int raio){
@@ -158,7 +106,15 @@ public static float[][] geraMatrizKripley(float[][] matriz, int raio){
 }
 
 
-
+public static float[][] copiaMatriz(float[][] matriz) {
+	float [][] matrizCopia = new float[matriz.length][matriz[0].length];
+	for (int i = 0; i<matriz.length;i++) {
+		for(int j = 0; j<matriz[0].length;j++) {
+			matrizCopia[i][j] = matriz[i][j]; 
+		}
+	}
+	return matrizCopia;
+}
 
 private static float[][] iniciaMatriz(int total_X, int total_Y){
 	float[][] matrizFinal = new float [total_X][total_Y];
