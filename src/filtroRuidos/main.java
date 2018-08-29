@@ -82,8 +82,11 @@ public class main {
         
 //        System.out.println("matriz de Valores");
 //        kRipleyFunction.imprimeMatriz(kRipleyFunction.matrizDeValoresInteiros(matrizTeste, 1, 0.5F));
-        int count = kRipleyFunction.remocaoDeRuidoBSD(matrizTeste, 1, 0.6f);
-        System.err.println("\n final: "+ count);
+//        int count = kRipleyFunction.remocaoDeRuidoBSD(matrizTeste, 1, 0.6f);
+//        System.err.println("\n final: "+ count);
+        
+        
+        imageController.ImageController.exibeImagem();
         		}
     
 }
