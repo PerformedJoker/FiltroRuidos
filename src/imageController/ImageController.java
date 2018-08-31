@@ -24,7 +24,7 @@ public static float[][] exibeImagem() {
 	
 	
 	try {
-	    File img = new File("/home/alexsandro/Documents/rgb.png");
+	    File img = new File("/home/alexsandro/Documents/rgbRuido.jpg");
 	    BufferedImage image = ImageIO.read(img ); 
 	    int m = image.getWidth();
 	    int n = image.getHeight();
@@ -37,11 +37,11 @@ public static float[][] exibeImagem() {
 	    
 	    for(int i = 0; i<m;i++) {
 	    	for(int j = 0; j<n;j++) {
-//	    		 System.out.print("R : " + raster.getPixel(i, j, arrayPixel)[0] + " | ");
-//                 System.out.print("G : " + raster.getPixel(i, j, arrayPixel)[1] + " | ");
-//                 System.out.println("B : " + raster.getPixel(i, j, arrayPixel)[2]);
+	    		 System.out.print("R : " + raster.getPixel(i, j, arrayPixel)[0] + " | ");
+                 System.out.print("G : " + raster.getPixel(i, j, arrayPixel)[1] + " | ");
+                 System.out.println("B : " + raster.getPixel(i, j, arrayPixel)[2]);
 	    		
-	    		 raster.getPixel(i, j, arrayPixel) ;
+//	    		 raster.getPixel(i, j, arrayPixel) ;
 	    		
 //	    		System.out.println(arrayPixel[0]);
 //                 image.setRGB(i, j, media(arrayPixel));
@@ -50,20 +50,13 @@ public static float[][] exibeImagem() {
 	    	}
 	    }
 	    
-//	    kRipleyFunction.imprimeMatriz(imagemMatriz);
+	    int raio = 1;
+	    float limiar =0.1f; 
 	    
-//	    kRipleyFunction.imprimeMatriz(imagemMatriz);
-//	    Desktop.getDesktop().open(image);
-	    
-//	    Graphics2D g = image.createGraphics();
-//	    
-//		g.drawImage(image, 0, 0, null);
-//		g.dispose();
-	    
-	    kRipleyFunction.remocaoDeRuidoBSD(imagemMatriz, 1, 0.6f);
-	    
-	    
-		imagemSaida(imagemMatriz);
+	    kRipleyFunction.remocaoDeRuidoBSD(imagemMatriz, raio, limiar);
+	    String descricao = "raio_"+raio+" limiar_"+limiar;
+	    descricao = "_imgColorida";
+		imagemSaida(imagemMatriz,descricao);
 		
 		return imagemMatriz;
 //	    System.out.println(image);
@@ -92,7 +85,7 @@ public static int media( int[] canais){
 
 //------------------------------------END---------------------////
 
-public static void imagemSaida(float[][] matriz) {
+public static void imagemSaida(float[][] matriz, String descricao) {
 	BufferedImage image = new BufferedImage(matriz.length, matriz[0].length,BufferedImage.TYPE_INT_RGB);
 	 try {
 		 
@@ -104,7 +97,8 @@ public static void imagemSaida(float[][] matriz) {
         }
     }
     
-    String nomeDoarquivo = geraNomeAleatorio()+".jpg";
+    String nomeDoarquivo = descricao+"_"+".jpg";
+//    String nomeDoarquivo = geraNomeAleatorio()+"_"+descricao+".jpg";
 //    File output = new File("GrayScale_teste.jpg");
     File output = new File(nomeDoarquivo);
 		ImageIO.write(image, "jpg", output);
@@ -123,7 +117,7 @@ public static String geraNomeAleatorio() {
 	 
 	String armazenaChaves = "";
 	int index = -1;
-	for( int i = 0; i < 9; i++ ) {
+	for( int i = 0; i < 3; i++ ) {
 	   index = random.nextInt( letras.length() );
 	   armazenaChaves += letras.substring( index, index + 1 );
 	}
