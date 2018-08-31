@@ -1,5 +1,6 @@
 package imageController;
 
+import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -46,7 +47,7 @@ public static float[][] exibeImagem() {
 	    }
 	    
 //	    kRipleyFunction.imprimeMatriz(imagemMatriz);
-	    return imagemMatriz;
+	    
 //	    kRipleyFunction.imprimeMatriz(imagemMatriz);
 //	    Desktop.getDesktop().open(image);
 	    
@@ -54,7 +55,9 @@ public static float[][] exibeImagem() {
 //	    
 //		g.drawImage(image, 0, 0, null);
 //		g.dispose();
+		imagemSaida(imagemMatriz);
 		
+		return imagemMatriz;
 //	    System.out.println(image);
 	} catch (IOException e) { 
 	    e.printStackTrace(); 
@@ -81,7 +84,26 @@ public static int media( int[] canais){
 
 //------------------------------------END---------------------////
 
-
+public static void imagemSaida(float[][] matriz) {
+	BufferedImage image = new BufferedImage(matriz.length, matriz[0].length,BufferedImage.TYPE_INT_RGB);
+	 try {
+		 
+    for(int i=0; i<matriz.length; i++) {
+        for(int j=0; j<matriz[0].length; j++) {
+            int a = (int) matriz[i][j];
+            Color newColor = new Color(a,a,a);
+            image.setRGB(i,j,newColor.getRGB());
+        }
+    }
+    File output = new File("GrayScale.jpg");
+   
+		ImageIO.write(image, "jpg", output);
+		System.err.println("salvou a imagem");
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+}
 
 private static BufferedImage toGrayscale(BufferedImage image)  throws IOException {  
     BufferedImage output = new BufferedImage(image.getWidth(),  
