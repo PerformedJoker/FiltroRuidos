@@ -36,9 +36,12 @@ public static float[][] exibeImagem() {
 	    
 	    for(int i = 0; i<m;i++) {
 	    	for(int j = 0; j<n;j++) {
-	    		 System.out.print("R : " + raster.getPixel(i, j, arrayPixel)[0] + " | ");
-                 System.out.print("G : " + raster.getPixel(i, j, arrayPixel)[1] + " | ");
-                 System.out.println("B : " + raster.getPixel(i, j, arrayPixel)[2]);
+//	    		 System.out.print("R : " + raster.getPixel(i, j, arrayPixel)[0] + " | ");
+//                 System.out.print("G : " + raster.getPixel(i, j, arrayPixel)[1] + " | ");
+//                 System.out.println("B : " + raster.getPixel(i, j, arrayPixel)[2]);
+	    		
+	    		 raster.getPixel(i, j, arrayPixel) ;
+	    		
 //	    		System.out.println(arrayPixel[0]);
 //                 image.setRGB(i, j, media(arrayPixel));
 //	    		System.out.println(image.getRGB(i, j));
@@ -55,6 +58,10 @@ public static float[][] exibeImagem() {
 //	    
 //		g.drawImage(image, 0, 0, null);
 //		g.dispose();
+	    
+	    kRipleyFunction.remocaoDeRuidoBSD(imagemMatriz, 1, 0.6f);
+	    
+	    
 		imagemSaida(imagemMatriz);
 		
 		return imagemMatriz;
@@ -95,7 +102,7 @@ public static void imagemSaida(float[][] matriz) {
             image.setRGB(i,j,newColor.getRGB());
         }
     }
-    File output = new File("GrayScale.jpg");
+    File output = new File("GrayScale_teste.jpg");
    
 		ImageIO.write(image, "jpg", output);
 		System.err.println("salvou a imagem");
