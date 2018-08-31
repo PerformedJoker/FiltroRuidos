@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -31,7 +32,7 @@ public static float[][] exibeImagem() {
 	    WritableRaster raster = image.getRaster();
 	    float[][] imagemMatriz = new float[m][n];
 	    
-	    BufferedImage imagemEscalaDeCinza = toGrayscale(image);
+	
 //	   System.out.println(toGrayscale(image)); 
 	    
 	    for(int i = 0; i<m;i++) {
@@ -102,8 +103,10 @@ public static void imagemSaida(float[][] matriz) {
             image.setRGB(i,j,newColor.getRGB());
         }
     }
-    File output = new File("GrayScale_teste.jpg");
-   
+    
+    String nomeDoarquivo = geraNomeAleatorio()+".jpg";
+//    File output = new File("GrayScale_teste.jpg");
+    File output = new File(nomeDoarquivo);
 		ImageIO.write(image, "jpg", output);
 		System.err.println("salvou a imagem");
 	} catch (IOException e) {
@@ -112,14 +115,23 @@ public static void imagemSaida(float[][] matriz) {
 	}
 }
 
-private static BufferedImage toGrayscale(BufferedImage image)  throws IOException {  
-    BufferedImage output = new BufferedImage(image.getWidth(),  
-      image.getHeight(), BufferedImage.TYPE_BYTE_GRAY);  
-    
-    Graphics2D g2d = output.createGraphics();  
-    g2d.drawImage(image, 0, 0, null);  
-    g2d.dispose();  
-    return output;  
+public static String geraNomeAleatorio() {
+	// Determia as letras que poderão estar presente nas chaves
+	String letras = "ABCDEFGHIJKLMNOPQRSTUVYWXZ";
+	 
+	Random random = new Random();
+	 
+	String armazenaChaves = "";
+	int index = -1;
+	for( int i = 0; i < 9; i++ ) {
+	   index = random.nextInt( letras.length() );
+	   armazenaChaves += letras.substring( index, index + 1 );
 	}
+	System.err.println( armazenaChaves );
+	
+	return armazenaChaves;
+}
 
 }
+
+
