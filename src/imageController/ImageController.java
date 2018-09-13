@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Random;
 
@@ -16,12 +17,12 @@ import kripleyFunction.kRipleyFunction;
 public class ImageController {
 
 	
-public static float[][] exibeImagem() {
+public static void exibeImagem() {
 	 
 //	BufferedImage img = new BufferedImage(256, 256,
 //		    BufferedImage.TYPE_INT_RGB);
 //	
-	
+
 	
 	try {
 	    File img = new File("/home/alexsandro/Documents/rgbRuido.jpg");
@@ -47,24 +48,28 @@ public static float[][] exibeImagem() {
 //                 image.setRGB(i, j, media(arrayPixel));
 //	    		System.out.println(image.getRGB(i, j));
 	    		imagemMatriz[i][j]= media(arrayPixel);
+//                 imagemMatriz[i][j]= combLinear(arrayPixel[0],arrayPixel[1],arrayPixel[2]);
 	    	}
 	    }
 	    
 	    int raio = 1;
-	    float limiar =0.1f; 
-	    
-	    kRipleyFunction.remocaoDeRuidoBSD(imagemMatriz, raio, limiar);
-	    String descricao = "raio_"+raio+" limiar_"+limiar;
-	    descricao = "_imgColorida";
-		imagemSaida(imagemMatriz,descricao);
-		
-		return imagemMatriz;
+	    float limiar =0.5f; 
+	  
+	    	float[][] matrizProcessada =  kRipleyFunction.remocaoDeRuidoBSD(imagemMatriz, raio, limiar);
+		    String descricao = "raio_"+raio+" limiar_"+limiar;
+		    descricao += "_imgColorida";
+			imagemSaida(matrizProcessada,descricao);	
+	    	    
+//	    salvaArqText(imagemMatriz, descricao);
+//		return imagemMatriz;
 //	    System.out.println(image);
 	} catch (IOException e) { 
 	    e.printStackTrace(); 
 	}
-	return null;
-}
+	
+	  }
+//	return null;
+
 
 
 //---------------MÉTODOS PARA TRANSFORMAR EM TONS DE CINZA-----------------////
@@ -79,7 +84,14 @@ public static int combLinear( int r,  int g, int b)
 //Metodo da media (
 public static int media( int[] canais){
  int novo;
- novo = (canais[0] + canais[1] + canais[2]) / 3;
+//  novo = (int)(canais[0] + canais[1] + canais[2]) / 3;
+ if(canais[1]>0   && canais[2]>0) {
+//	 System.err.println("troca de cores para gray");
+	 novo = (canais[0] + canais[1] + canais[2]) / 3;	 
+ }else {
+	 novo = canais[0];
+ }
+ 
  return novo;
 }
 
@@ -93,6 +105,7 @@ public static void imagemSaida(float[][] matriz, String descricao) {
         for(int j=0; j<matriz[0].length; j++) {
             int a = (int) matriz[i][j];
             Color newColor = new Color(a,a,a);
+           
             image.setRGB(i,j,newColor.getRGB());
         }
     }
@@ -109,6 +122,21 @@ public static void imagemSaida(float[][] matriz, String descricao) {
 	}
 }
 
+public static void salvaArqText(float[][] matriz, String descricao) {
+	String textoQueSeraEscrito = transformaMatrizToTxt(matriz);
+	FileWriter arquivo;
+	try {
+		arquivo = new FileWriter(new File(descricao+".txt"));
+		arquivo.write(textoQueSeraEscrito);
+		arquivo.close();
+	} catch (IOException e) {
+		e.printStackTrace();
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+}
+
+
 public static String geraNomeAleatorio() {
 	// Determia as letras que poderão estar presente nas chaves
 	String letras = "ABCDEFGHIJKLMNOPQRSTUVYWXZ";
@@ -124,6 +152,25 @@ public static String geraNomeAleatorio() {
 	System.err.println( armazenaChaves );
 	
 	return armazenaChaves;
+}
+
+public static String transformaMatrizToTxt(float[][] matrix) {
+	String arquivo="";
+	for(int i = 0; i< matrix.length; i++) {
+		
+		for(int j = 0; j< matrix[0].length; j++) {
+			if(matrix[i][j] == 0) {
+				arquivo+=" | "+matrix[i][j]+" ";
+			}else {
+				arquivo+=" | "+matrix[i][j];
+			}
+		} 
+		
+		arquivo+=" |";
+	}
+	
+	
+	return arquivo;
 }
 
 }

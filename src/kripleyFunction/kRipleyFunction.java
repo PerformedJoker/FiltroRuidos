@@ -5,28 +5,28 @@ import featuresExtraction.Statistical;
 public class kRipleyFunction {
 
 
-public static int remocaoDeRuidoBSD(float[][] matriz, int raio, float threshold){
+public static float[][] remocaoDeRuidoBSD(float[][] matriz, int raio, float threshold){
 	
-//	System.out.println("\nMatriz Inicial  Abaixo");
-//	imprimeMatriz(matriz);
 	float[][] MatrizAux = copiaMatriz(matriz);
 	float[][] matrizK = geraMatrizKripley(MatrizAux, raio);
-//	System.out.println("\nMatriz de K  Abaixo");
+	System.out.println("\nMatriz de K  Abaixo");
 //	imprimeMatriz(matrizK);
-	float[][] matrizDePixels = copiaMatriz(matriz);
+	float[][] matrizDePixels= copiaMatriz(matriz);
 	//Verificar se o valor que está na matriz de K é inferior ao threshold e aplica a moda a essa vizinhança
 	for(int i = 0; i<matrizK.length;i++) {
 		for(int j = 0; j<matrizK[0].length;j++) {
 			if(matrizK[i][j]<threshold){
+//			System.err.println(count++);
 //				System.out.println("valor de m[i][j]: "+matriz[i][j]+"\n limiar : "+threshold);
 //				System.out.println("\nMatriz auxiliar na iteração ["+i+"]["+j+"]");
 				matrizDePixels[i][j] = retornaModaDoElemento(matriz, raio, i, j);
+//				System.out.println("Moda do elemento: "+matrizDePixels[i][j]);
 			}
 		}
 	}
 //	System.out.println("\nMatriz Final de pixels Abaixo");
 //	imprimeMatriz(matrizDePixels);
-	return 0;
+	return matrizDePixels;
 }
 
 
