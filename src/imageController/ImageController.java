@@ -25,7 +25,7 @@ public static void exibeImagem() {
 
 	
 	try {
-	    File img = new File("/home/alexsandro/Documents/rgbRuido.jpg");
+	    File img = new File("/home/alexsandro/Documents/GrayScaleSaltPepper.png");
 	    BufferedImage image = ImageIO.read(img ); 
 	    int m = image.getWidth();
 	    int n = image.getHeight();
@@ -53,9 +53,9 @@ public static void exibeImagem() {
 	    }
 	    
 	    int raio = 1;
-	    float limiar =0.5f; 
-	  
-	    	float[][] matrizProcessada =  kRipleyFunction.remocaoDeRuidoBSD(imagemMatriz, raio, limiar);
+	    float limiar =1.15f; 
+	    float taxaDeAnalise = 0.25f;
+	    	float[][] matrizProcessada =  kRipleyFunction.remocaoDeRuidoBSD(imagemMatriz, raio, limiar, taxaDeAnalise);
 		    String descricao = "raio_"+raio+" limiar_"+limiar;
 		    descricao += "_imgColorida";
 			imagemSaida(matrizProcessada,descricao);	

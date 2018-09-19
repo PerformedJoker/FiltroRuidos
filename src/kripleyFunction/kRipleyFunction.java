@@ -5,10 +5,10 @@ import featuresExtraction.Statistical;
 public class kRipleyFunction {
 
 
-public static float[][] remocaoDeRuidoBSD(float[][] matriz, int raio, float threshold){
+public static float[][] remocaoDeRuidoBSD(float[][] matriz, int raio, float threshold,float taxaDeAnalise){
 	
 	float[][] MatrizAux = copiaMatriz(matriz);
-	float[][] matrizK = geraMatrizKripley(MatrizAux, raio);
+	float[][] matrizK = geraMatrizKripley(MatrizAux, raio,taxaDeAnalise);
 	System.out.println("\nMatriz de K  Abaixo");
 //	imprimeMatriz(matrizK);
 	float[][] matrizDePixels= copiaMatriz(matriz);
@@ -64,7 +64,7 @@ public static float retornaModaDoElemento(float[][] matriz, int raio, int x, int
 	return modaDaMascara;
 }
 
-public static float convolucaoMask(float[][] matriz, int raio, int x, int y){
+public static float convolucaoMask(float[][] matriz, int raio, int x, int y,float taxaDeAnalise){
 	int m = matriz.length;
 	int n = matriz[0].length;
 	int tamanhoMascara = 2*raio+1;
@@ -72,8 +72,12 @@ public static float convolucaoMask(float[][] matriz, int raio, int x, int y){
 	int repeticoesTotalElemento,countElementoNaMascara ;
 	float[][] matrizAuxiliar = matriz;
 	float[][] mascara = iniciaMatriz(tamanhoMascara,tamanhoMascara);
+	
+	int areaMatrizDeAnalise = (int) (m*taxaDeAnalise);
+	float[][] matrizPercentual = matrizPercentual(matriz,areaMatrizDeAnalise);
+	
 	int iLinha = 0, jColuna =0;
-	int numeroElementosMatriz = m*n;
+	int numeroElementosMatriz = (int)(m*taxaDeAnalise);
 	for(int i = x-raio; i<=x+raio;i++){
 		jColuna = 0;
 		for(int j = y-raio; j<=y+raio ;j++){
@@ -84,25 +88,47 @@ public static float convolucaoMask(float[][] matriz, int raio, int x, int y){
 			}
 		iLinha++;
 	}
+	
+	
 	iLinha = 0;
 	jColuna =0;
-	repeticoesTotalElemento = numeroRepeticaoElemento(matrizAuxiliar,valorElementoatual);
+	repeticoesTotalElemento = numeroRepeticaoElemento(matrizPercentual,valorElementoatual);
 	countElementoNaMascara = numeroRepeticaoElemento(mascara,valorElementoatual);
 	float resultado = (float)(countElementoNaMascara*repeticoesTotalElemento)/numeroElementosMatriz; 
 		return resultado; 
 }
 
-public static float[][] geraMatrizKripley(float[][] matriz, int raio){
+public static float[][] geraMatrizKripley(float[][] matriz, int raio, float taxaDeAnalise){
 	float[][] matrizK = new float[matriz.length][matriz[0].length];
 	for(int i = 0; i<matriz.length;i++) {
 //		System.out.println("i na funcao de gera matriz "+i);
 		for(int j = 0; j<matriz[0].length; j++) {
 //			System.out.println("j na funcao de gera matriz "+j);
-			matrizK[i][j] = convolucaoMask(matriz, raio, i, j);
+			matrizK[i][j] = convolucaoMask(matriz, raio, i, j,taxaDeAnalise);
 		}
 	}
 	
 	return matrizK;
+}
+
+
+public static float[][] matrizPercentual(float[][] matrizDePixels, float taxaDeAnalise){
+	int analise = (int) ( matrizDePixels.length * taxaDeAnalise);
+	int iLinha = 0, jColuna =0;
+	float[][] matrizPercentual = new float[analise][analise];
+	for(int i = analise; i<=analise;i++){
+		jColuna = 0;
+		for(int j = analise; j<=analise ;j++){
+			if((i>=0 && i<matrizDePixels.length) && (j>=0 && j<matrizDePixels[0].length) ){
+				matrizPercentual[iLinha][jColuna] = matrizDePixels[i][j];	
+				}
+			jColuna++;
+			}
+		iLinha++;
+	}
+	
+	
+	return null;
 }
 
 
