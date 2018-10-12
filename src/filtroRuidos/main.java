@@ -82,11 +82,15 @@ public class main {
         
 //        System.out.println("matriz de Valores");
 //        kRipleyFunction.imprimeMatriz(kRipleyFunction.matrizDeValoresInteiros(matrizTeste, 1, 0.5F));
-//         kRipleyFunction.remocaoDeRuidoBSD(imageController.ImageController.exibeImagem(), 1, 0.6f);
+//       kRipleyFunction.remocaoDeRuidoBSD(matrizTeste, 1, 0.6f,5);
 //        System.err.println("\n final: ");
         
-        
+        long tempoInicial = System.currentTimeMillis();
+       
         imageController.ImageController.exibeImagem();
+      long tempoFinal = System.currentTimeMillis();
+      System.out.printf("%.2f ", ((tempoFinal - tempoInicial) / 1000d)/60);
+        
         		}
     
 }

@@ -154,7 +154,7 @@ public class Statistical {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                if (pixels[i][j] != 0 && buffer < pixels[i][j]) {
+                if ((pixels[i][j] != 0 ||pixels[i][j] != -1) && buffer < pixels[i][j]) {
                     buffer = pixels[i][j];
                 }
             }
@@ -193,7 +193,7 @@ public class Statistical {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                if (pixels[i][j] != 0 && buffer > pixels[i][j]) {
+                if ((pixels[i][j] != 0 ||pixels[i][j] != -1)  && buffer > pixels[i][j]) {
                     buffer = pixels[i][j];
                 }
             }

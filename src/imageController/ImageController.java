@@ -25,7 +25,7 @@ public static void exibeImagem() {
 
 	
 	try {
-	    File img = new File("/home/alexsandro/Documents/GrayScaleSaltPepper.png");
+	    File img = new File("/home/alexsandro/Documents/oasisSaltAndPepper_.jpg");
 	    BufferedImage image = ImageIO.read(img ); 
 	    int m = image.getWidth();
 	    int n = image.getHeight();
@@ -48,18 +48,23 @@ public static void exibeImagem() {
 //                 image.setRGB(i, j, media(arrayPixel));
 //	    		System.out.println(image.getRGB(i, j));
 	    		imagemMatriz[i][j]= media(arrayPixel);
-//                 imagemMatriz[i][j]= combLinear(arrayPixel[0],arrayPixel[1],arrayPixel[2]);
+////                 imagemMatriz[i][j] =  combLinear(raster.getPixel(i, j, arrayPixel)[0],
+//                		 						raster.getPixel(i, j, arrayPixel)[1],
+//                		 						raster.getPixel(i, j, arrayPixel)[2]);
 	    	}
 	    }
 	    
-	    int raio = 1;
-	    float limiar =1.15f; 
-	    float taxaDeAnalise = 0.25f;
+	    int raio = 2;
+	    float limiar =0.05f; 
+	    int taxaDeAnalise = 500;//tamanho da sub área de análise. 
 	    	float[][] matrizProcessada =  kRipleyFunction.remocaoDeRuidoBSD(imagemMatriz, raio, limiar, taxaDeAnalise);
-		    String descricao = "raio_"+raio+" limiar_"+limiar;
-		    descricao += "_imgColorida";
+//		    String descricao = "TESTE_6_raio_"+raio+"_menor_que25_maior_que22"+"_limiar_"+limiar+"_taxa de analise_"+taxaDeAnalise+"x";
+//		    descricao += "_imgColorida";
+		    
+	    	 String descricao="Oasis";
 			imagemSaida(matrizProcessada,descricao);	
-	    	    
+//		    imagemSaida(imagemMatriz,descricao);
+			    
 //	    salvaArqText(imagemMatriz, descricao);
 //		return imagemMatriz;
 //	    System.out.println(image);
