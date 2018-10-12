@@ -25,6 +25,9 @@ public static float[][] remocaoDeRuidoBSD(float[][] matriz, int raio, float thre
 		}
 	}
 	
+
+	
+	
 	
 //	for(int i = 0; i<matrizK.length;i++) {
 //		for(int j = 0; j<matrizK[0].length;j++) {
