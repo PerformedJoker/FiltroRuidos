@@ -18,63 +18,18 @@ public class ImageController {
 
 	
 public static void exibeImagem() {
-	 
-//	BufferedImage img = new BufferedImage(256, 256,
-//		    BufferedImage.TYPE_INT_RGB);
-//	
 
-	
-	try {
-	    File img = new File("/home/alexsandro/Documents/oasisSaltAndPepper_.jpg");
-	    BufferedImage image = ImageIO.read(img ); 
-	    int m = image.getWidth();
-	    int n = image.getHeight();
-	    int[] arrayPixel = new int[3];
-	    WritableRaster raster = image.getRaster();
-	    float[][] imagemMatriz = new float[m][n];
-	    
-	
-//	   System.out.println(toGrayscale(image)); 
-	    
-	    for(int i = 0; i<m;i++) {
-	    	for(int j = 0; j<n;j++) {
-	    		 System.out.print("R : " + raster.getPixel(i, j, arrayPixel)[0] + " | ");
-                 System.out.print("G : " + raster.getPixel(i, j, arrayPixel)[1] + " | ");
-                 System.out.println("B : " + raster.getPixel(i, j, arrayPixel)[2]);
-	    		
-//	    		 raster.getPixel(i, j, arrayPixel) ;
-	    		
-//	    		System.out.println(arrayPixel[0]);
-//                 image.setRGB(i, j, media(arrayPixel));
-//	    		System.out.println(image.getRGB(i, j));
-	    		imagemMatriz[i][j]= media(arrayPixel);
-////                 imagemMatriz[i][j] =  combLinear(raster.getPixel(i, j, arrayPixel)[0],
-//                		 						raster.getPixel(i, j, arrayPixel)[1],
-//                		 						raster.getPixel(i, j, arrayPixel)[2]);
-	    	}
-	    }
-	    
-	    int raio = 2;
-	    float limiar =0.05f; 
-	    int taxaDeAnalise = 500;//tamanho da sub área de análise. 
-	    	float[][] matrizProcessada =  kRipleyFunction.remocaoDeRuidoBSD(imagemMatriz, raio, limiar, taxaDeAnalise);
-//		    String descricao = "TESTE_6_raio_"+raio+"_menor_que25_maior_que22"+"_limiar_"+limiar+"_taxa de analise_"+taxaDeAnalise+"x";
-//		    descricao += "_imgColorida";
-		    
-	    	 String descricao="Oasis";
-			imagemSaida(matrizProcessada,descricao);	
-//		    imagemSaida(imagemMatriz,descricao);
-			    
-//	    salvaArqText(imagemMatriz, descricao);
-//		return imagemMatriz;
-//	    System.out.println(image);
-	} catch (IOException e) { 
-	    e.printStackTrace(); 
-	}
-	
+		    String nomeImagem = "vein.png";
+			String urlProcessada = "/home/alexsandro/Documents/"+nomeImagem;
+			float[][] imagemMatriz = converteImageToMatriz(urlProcessada);
+			
+		    int raio = 2;
+		    float limiar =0.05f;
+		    int taxaDeAnalise = 500;//tamanho da sub área de análise. 
+		    	float[][] matrizProcessada =  kRipleyFunction.remocaoDeRuidoBSD(imagemMatriz, raio, limiar, taxaDeAnalise);
+			    String descricao = nomeImagem+"_raio_"+raio+"_SNR_"+"_limiar_"+limiar+"_taxa de analise_"+taxaDeAnalise+"x";
+				imagemSaida(imagemMatriz,descricao);	
 	  }
-//	return null;
-
 
 
 //---------------MÉTODOS PARA TRANSFORMAR EM TONS DE CINZA-----------------////
@@ -127,6 +82,8 @@ public static void imagemSaida(float[][] matriz, String descricao) {
 	}
 }
 
+
+
 public static void salvaArqText(float[][] matriz, String descricao) {
 	String textoQueSeraEscrito = transformaMatrizToTxt(matriz);
 	FileWriter arquivo;
@@ -177,6 +134,87 @@ public static String transformaMatrizToTxt(float[][] matrix) {
 	
 	return arquivo;
 }
+
+
+public static void calculaErroQuadratico() {
+	
+//	String nomeImagemOriginal = "";
+	String urlOriginais = "/home/alexsandro/Documents/oasisBW.jpg";
+	float[][] imagemOriginal = converteImageToMatriz(urlOriginais);
+	
+//	String urlProcessada = "/home/alexsandro/git/FiltroRuidos/imagensFinais/lenaResultado.jpg";
+	String urlProcessada = "/home/alexsandro/Documents/oasisSaltAndPepper_.jpg";
+	float[][] imagemProcessada = converteImageToMatriz(urlProcessada);
+	int acertos=0;
+	int totalElementos = imagemOriginal.length*imagemOriginal[0].length;
+	float erroQuadratico=0.00f;
+	System.err.println("\nTotal de elementos:"+totalElementos);
+	for(int i = 0; i<imagemOriginal.length;i++) {
+    	for(int j = 0; j<imagemOriginal[0].length;j++) {
+    		if(imagemOriginal[i][j] == imagemProcessada[i][j]) {
+    			acertos++;
+//    			System.out.println("valor na original: "+imagemOriginal[i][j]+" Valor no process: "+imagemProcessada[i][j]);
+    		}else {
+//    			System.out.println("valor na original: "+imagemOriginal[i][j]+" Valor no process: "+imagemProcessada[i][j]);
+    		}
+    		
+    		erroQuadratico += Math.abs((imagemOriginal[i][j]-imagemProcessada[i][j]));
+    		
+    	}
+    		
+    }
+	
+	System.err.println("\nErro quadratico:"+erroQuadratico);
+	
+	System.err.println("\nErro quadratico com raíz:"+Math.sqrt(erroQuadratico/totalElementos));
+	
+	if(acertos>0) {
+		System.err.println(acertos);
+		float acuracia = acertos/totalElementos;
+		System.err.println("\nAcurácia de:"+acuracia);
+	}else {
+		System.err.println("\nErro igual a zero");
+	}
+	
+	
+}	
+
+
+public static float[][] converteImageToMatriz(String url){
+	
+	try {
+	
+//	String nomeImagem = nomeArquivo+"_";
+//    File img = new File("/home/alexsandro/Documents/"+nomeImagem+".jpg");
+		System.err.println("Caminho do arquivo:"+url);
+		File img = new File(url);
+    BufferedImage image = ImageIO.read(img ); 
+    int m = image.getWidth();
+    int n = image.getHeight();
+    int[] arrayPixel = new int[3];
+    WritableRaster raster = image.getRaster();
+    float[][] imagemMatriz = new float[m][n];
+    for(int i = 0; i<m;i++) {
+    	for(int j = 0; j<n;j++) {
+//    		 System.out.print("R : " + raster.getPixel(i, j, arrayPixel)[0] + " | ");
+//             System.out.print("G : " + raster.getPixel(i, j, arrayPixel)[1] + " | ");
+//             System.out.println("B : " + raster.getPixel(i, j, arrayPixel)[2]);
+    		arrayPixel[0] = raster.getPixel(i, j, arrayPixel)[0];
+    		arrayPixel[1] = raster.getPixel(i, j, arrayPixel)[1];
+    		arrayPixel[2] = raster.getPixel(i, j, arrayPixel)[2];
+    		imagemMatriz[i][j]= media(arrayPixel);
+    	}
+    }
+//    kRipleyFunction.imprimeMatriz(imagemMatriz);
+	    return imagemMatriz;
+		
+		} catch (IOException e) { 
+		    e.printStackTrace(); 
+		    return null;
+		}
+		
+}
+
 
 }
 

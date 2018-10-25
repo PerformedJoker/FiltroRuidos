@@ -8,30 +8,14 @@ public class kRipleyFunction {
 public static float[][] remocaoDeRuidoBSD(float[][] matriz, int raio, float threshold,int taxaDeAnalise){
 	
 	float[][] MatrizAux = copiaMatriz(matriz);
-	float[][] matrizK = geraMatrizKripley(MatrizAux, raio,taxaDeAnalise);
+//	float[][] matrizK = geraMatrizKripley(MatrizAux, raio,taxaDeAnalise);
 //	System.out.println("\nMatriz de K  Abaixo");
 //	imprimeMatriz(matrizK);
 	float[][] matrizDePixels= copiaMatriz(matriz);
 	//Verificar se o valor que está na matriz de K é inferior ao threshold e aplica a moda a essa vizinhança
-	for(int i = 0; i<matrizK.length;i++) {
-		for(int j = 0; j<matrizK[0].length;j++) {
-			if(matrizK[i][j]<threshold){
-//			System.err.println(count++);
-//				System.out.println("valor de m[i][j]: "+matriz[i][j]+"\n limiar : "+threshold);
-//				System.out.println("\nMatriz auxiliar na iteração ["+i+"]["+j+"]");
-				matrizDePixels[i][j] = retornaModaDoElemento(matriz, raio, i, j);
-//				System.out.println("Moda do elemento: "+matrizDePixels[i][j]);
-			}
-		}
-	}
-	
-
-	
-	
-	
 //	for(int i = 0; i<matrizK.length;i++) {
 //		for(int j = 0; j<matrizK[0].length;j++) {
-//			if(matrizDePixels[i][j]<25 || matrizDePixels[i][j]>225){
+//			if(matrizK[i][j]<threshold){
 ////			System.err.println(count++);
 ////				System.out.println("valor de m[i][j]: "+matriz[i][j]+"\n limiar : "+threshold);
 ////				System.out.println("\nMatriz auxiliar na iteração ["+i+"]["+j+"]");
@@ -41,11 +25,29 @@ public static float[][] remocaoDeRuidoBSD(float[][] matriz, int raio, float thre
 //		}
 //	}
 //	
+
 	
 	
 	
-	System.out.println("\nMatriz Final de pixels Abaixo");
-	imprimeMatriz(matrizDePixels);
+	for(int i = 0; i<MatrizAux.length;i++) {
+		for(int j = 0; j<MatrizAux[0].length;j++) {
+			if(matrizDePixels[i][j] <25 || matrizDePixels[i][j]>235){
+				
+				System.err.println("VALOR DO PIXEL:"+matrizDePixels[i][j]);
+//			System.err.println(count++);
+//				System.out.println("valor de m[i][j]: "+matriz[i][j]+"\n limiar : "+threshold);
+//				System.out.println("\nMatriz auxiliar na iteração ["+i+"]["+j+"]");
+				matrizDePixels[i][j] = retornaModaDoElemento(matriz, raio, i, j);
+//				System.out.println("Moda do elemento: "+matrizDePixels[i][j]);
+			}
+		}
+	}
+	
+	
+	
+	
+//	System.out.println("\nMatriz Final de pixels Abaixo");
+//	imprimeMatriz(matrizDePixels);
 	
 	return matrizDePixels;
 }
