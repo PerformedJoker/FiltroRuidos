@@ -16,19 +16,34 @@ import kripleyFunction.kRipleyFunction;
 
 public class ImageController {
 
+
+	
+public static String[] baseImagens() {
+	String[] caminhos = {"yachNoise.jpg","amsBW_Noise.jpg","bsbNoise.jpg","casaraoNoise.jpg","ceuNoise.jpg",
+			"forteNoise.jpg","plantasNoise.jpg","praia1Noise.jpg"};
+	System.err.println(caminhos[0]);
+	System.err.println(caminhos.length);
+	return caminhos;
+	
+}
 	
 public static void exibeImagem() {
-
-		    String nomeImagem = "vein.png";
-			String urlProcessada = "/home/alexsandro/Documents/"+nomeImagem;
-			float[][] imagemMatriz = converteImageToMatriz(urlProcessada);
-			
-		    int raio = 2;
-		    float limiar =0.05f;
-		    int taxaDeAnalise = 500;//tamanho da sub área de análise. 
-		    	float[][] matrizProcessada =  kRipleyFunction.remocaoDeRuidoBSD(imagemMatriz, raio, limiar, taxaDeAnalise);
-			    String descricao = nomeImagem+"_raio_"+raio+"_SNR_"+"_limiar_"+limiar+"_taxa de analise_"+taxaDeAnalise+"x";
-				imagemSaida(imagemMatriz,descricao);	
+	
+	String[] caminhos = baseImagens();
+	
+	for (int i = 0;i<caminhos.length;i++) {
+//		String nomeImagem = "amsBW_Noise.jpg";
+		String urlProcessada = "/home/alexsandro/Documents/"+caminhos[i];
+		float[][] imagemMatriz = converteImageToMatriz(urlProcessada);
+		
+	    int raio = 3;
+	    float limiar =5.5f;
+	    int taxaDeAnalise = 500;//tamanho da sub área de análise. 
+	    	float[][] matrizProcessada =  kRipleyFunction.remocaoDeRuidoBSD(imagemMatriz, raio, limiar, taxaDeAnalise);
+		    String descricao = caminhos[i]+"_raio_"+raio+"_MODAMASK_"+i+"_limiar_"+limiar+"_taxa de analise_"+taxaDeAnalise+"x";
+			imagemSaida(matrizProcessada,descricao);	
+	}
+		    
 	  }
 
 
@@ -142,8 +157,8 @@ public static void calculaErroQuadratico() {
 	String urlOriginais = "/home/alexsandro/Documents/oasisBW.jpg";
 	float[][] imagemOriginal = converteImageToMatriz(urlOriginais);
 	
-//	String urlProcessada = "/home/alexsandro/git/FiltroRuidos/imagensFinais/lenaResultado.jpg";
-	String urlProcessada = "/home/alexsandro/Documents/oasisSaltAndPepper_.jpg";
+	String urlProcessada = "/home/alexsandro/git/FiltroRuidos/imagensFinais/oasis_Final.jpg";
+//	String urlProcessada = "/home/alexsandro/Documents/oasisBW_Media.jpg";
 	float[][] imagemProcessada = converteImageToMatriz(urlProcessada);
 	int acertos=0;
 	int totalElementos = imagemOriginal.length*imagemOriginal[0].length;
@@ -166,8 +181,8 @@ public static void calculaErroQuadratico() {
 	
 	System.err.println("\nErro quadratico:"+erroQuadratico);
 	
-	System.err.println("\nErro quadratico com raíz:"+Math.sqrt(erroQuadratico/totalElementos));
-	
+	System.err.println("\nErro quadratico pelo numero de elementos:"+Math.sqrt(erroQuadratico/totalElementos));
+	System.err.println("\nAcertos: "+acertos);
 	if(acertos>0) {
 		System.err.println(acertos);
 		float acuracia = acertos/totalElementos;

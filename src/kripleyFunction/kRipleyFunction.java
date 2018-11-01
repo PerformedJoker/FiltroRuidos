@@ -8,9 +8,10 @@ public class kRipleyFunction {
 public static float[][] remocaoDeRuidoBSD(float[][] matriz, int raio, float threshold,int taxaDeAnalise){
 	
 	float[][] MatrizAux = copiaMatriz(matriz);
-//	float[][] matrizK = geraMatrizKripley(MatrizAux, raio,taxaDeAnalise);
+	float[][] matrizK = geraMatrizKripley(MatrizAux, raio,taxaDeAnalise);
 //	System.out.println("\nMatriz de K  Abaixo");
 //	imprimeMatriz(matrizK);
+//	System.err.println("matriz K acima");
 	float[][] matrizDePixels= copiaMatriz(matriz);
 	//Verificar se o valor que está na matriz de K é inferior ao threshold e aplica a moda a essa vizinhança
 //	for(int i = 0; i<matrizK.length;i++) {
@@ -24,16 +25,16 @@ public static float[][] remocaoDeRuidoBSD(float[][] matriz, int raio, float thre
 //			}
 //		}
 //	}
-//	
+	
 
 	
 	
-	
+//	
 	for(int i = 0; i<MatrizAux.length;i++) {
 		for(int j = 0; j<MatrizAux[0].length;j++) {
 			if(matrizDePixels[i][j] <25 || matrizDePixels[i][j]>235){
 				
-				System.err.println("VALOR DO PIXEL:"+matrizDePixels[i][j]);
+//				System.err.println("VALOR DO PIXEL:"+matrizDePixels[i][j]);
 //			System.err.println(count++);
 //				System.out.println("valor de m[i][j]: "+matriz[i][j]+"\n limiar : "+threshold);
 //				System.out.println("\nMatriz auxiliar na iteração ["+i+"]["+j+"]");
@@ -126,20 +127,20 @@ public static float convolucaoMask(float[][] matriz, int raio, int x, int y,int 
 	iLinha = 0;
 	jColuna =0;
 	
-	for(int i = x-numeroElementosMatriz; i<=x+tamanhoMascaraPercentual;i++){
-		for(int j = y; j<=y+tamanhoMascaraPercentual ;j++){
-//			System.out.println("valor do i:"+i+" valor do j:"+j);
-			if((i>=0 && i<m) && (j>=0 && j<n) ){
-				matrizPercentual[i][j] = matrizAuxiliar[i][j];	
-				}
-			}
-		}
+//	for(int i = x-numeroElementosMatriz; i<=x+tamanhoMascaraPercentual;i++){
+//		for(int j = y; j<=y+tamanhoMascaraPercentual ;j++){
+////			System.out.println("valor do i:"+i+" valor do j:"+j);
+//			if((i>=0 && i<m) && (j>=0 && j<n) ){
+//				matrizPercentual[i][j] = matrizAuxiliar[i][j];	
+//				}
+//			}
+//		}
 	
 	
 //	System.out.println("\nImprimindo a matriz percentual\n");
 //	imprimeMatriz(matrizPercentual);
 	
-	repeticoesTotalElemento = numeroRepeticaoElemento(matrizPercentual,valorElementoatual);
+	repeticoesTotalElemento = numeroRepeticaoElemento(matrizAuxiliar,valorElementoatual);
 	countElementoNaMascara = numeroRepeticaoElemento(mascara,valorElementoatual);
 	float resultado = (float)(countElementoNaMascara*repeticoesTotalElemento)/numeroElementosMatriz; 
 		return resultado; 

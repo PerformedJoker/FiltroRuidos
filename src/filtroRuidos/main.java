@@ -86,13 +86,13 @@ public class main {
 //       kRipleyFunction.remocaoDeRuidoBSD(matrizTeste, 1, 0.6f,5);
 //        System.err.println("\n final: ");
         
-//        long tempoInicial = System.currentTimeMillis();
-       
-//        ImageController.exibeImagem();
+        long tempoInicial = System.currentTimeMillis();
+        ImageController.baseImagens();
+        ImageController.exibeImagem();
         
-       ImageController.calculaErroQuadratico();
-//      long tempoFinal = System.currentTimeMillis();
-//      System.out.printf("%.2f ", ((tempoFinal - tempoInicial) / 1000d)/60);
+//       ImageController.calculaErroQuadratico();
+      long tempoFinal = System.currentTimeMillis();
+      System.out.printf("%.2f ", ((tempoFinal - tempoInicial) / 1000d)/60);
         
         		}
     
