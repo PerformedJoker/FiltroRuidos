@@ -8,6 +8,8 @@
  */
 package filtroRuidos;
 
+import java.io.File;
+
 import imageController.ImageController;
 import kripleyFunction.kRipleyFunction;
 
@@ -20,6 +22,8 @@ public class main {
     /**
      * @param args the command line arguments
      */
+	
+	
     public static void main(String[] args) {
         // TODO code application logic here
 //        System.out.println("Primeiro branch nesse projeto");
@@ -86,13 +90,19 @@ public class main {
 //       kRipleyFunction.remocaoDeRuidoBSD(matrizTeste, 1, 0.6f,5);
 //        System.err.println("\n final: ");
         
-        long tempoInicial = System.currentTimeMillis();
-        ImageController.baseImagens();
-        ImageController.exibeImagem();
-        
-//       ImageController.calculaErroQuadratico();
-      long tempoFinal = System.currentTimeMillis();
-      System.out.printf("%.2f ", ((tempoFinal - tempoInicial) / 1000d)/60);
+//        long tempoInicial = System.currentTimeMillis();
+//        ImageController.baseImagens();
+//        ImageController.exibeImagem();
+//        ImageController.selectedImage();
+         
+       // diretorio1 = ImageController.selectedDiretorio();
+		//diretorio2 = ImageController.selectedDiretorio();
+       
+        	ImageController.calculaErroQuadratico();
+       
+       
+//      long tempoFinal = System.currentTimeMillis();
+//      System.out.printf("\nTempo total de Execucao: %.2f ", ((tempoFinal - tempoInicial) / 1000d)/60);
         
         		}
     

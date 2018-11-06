@@ -1,0 +1,4 @@
+Caminho da imagem:/Users/alexsandrosaraiva/Documents/workspace-sts/FiltroRuidos/imagensFinais/Modal Mask only/ceuNoise.jpg_raio_2_modalMask_3_limiar_3.0_taxa de analise_500x_.jpg
+Erro quadrático: 558889.0
+Erro quadrático médio:0.7106641
+Total de acertos: 485131

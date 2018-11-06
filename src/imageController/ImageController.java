@@ -1,6 +1,7 @@
 package imageController;
 
 import java.awt.Color;
+
 import java.awt.Desktop;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -11,37 +12,118 @@ import java.io.IOException;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import kripleyFunction.kRipleyFunction;
+import filtroRuidos.main;
 
 public class ImageController {
-
-
 	
 public static String[] baseImagens() {
-	String[] caminhos = {"yachNoise.jpg","amsBW_Noise.jpg","bsbNoise.jpg","casaraoNoise.jpg","ceuNoise.jpg",
-			"forteNoise.jpg","plantasNoise.jpg","praia1Noise.jpg"};
-	System.err.println(caminhos[0]);
-	System.err.println(caminhos.length);
-	return caminhos;
 	
+	String[] nomeImagem = {"haiaBW_SaltAndPepper.jpg","amsBW_Noise.jpg","casaraoNoise.jpg","ceuNoise.jpg",
+			"forteNoise.jpg","plantasNoise.jpg","praia1Noise.jpg","ufmaNoise.jpg","veinSaltAndPepper.png",
+			"tulipaBW_SaltAndPepper.jpg","restBW_Noise.jpg","oasisSaltAndPepper_.jpg",
+			 "lenaGraySaltAndPeper.jpg","bsbBW_SaltAndPepper.jpg","yachNoise.jpg"};
+	System.err.println("Numero de imagens: "+nomeImagem.length);
+	return nomeImagem;
+}
+
+
+public static String[] baseImagensProcessadas() {
+	String[] caminhos = {"amsBW_Noise.jpg","casaraoNoise.jpg","ceuNoise.jpg",
+			"forteNoise.jpg","plantasNoise.jpg","praia1Noise.jpg"};
+	System.err.println("Numero de imagens: "+caminhos.length);
+	return caminhos;
 }
 	
+
+/*public static String[] todasImagensProcessadas() {
+	String[] titulos = {
+			"ceuNoise.jpg"
+			"ceuSNR.jpg",
+			"ceu_gaussiana.jpg",
+			"ceu_media.jpg
+			"ceu_mediana.jpg
+			"forteNoise.jpg
+			"forteSNR.jpg
+			"forte_gaussiana.jpg
+			"forte_media.jpg
+			"forte_mediana.jpg
+			"haiaBW_SaltAndPepper.jpg
+			"haiaBW_gaussiana.jpg
+			"haiaBW_media.jpg
+			"haiaBW_mediana.jpg
+			"haiaSNR.jpg
+			"oasisBW_Media.jpg
+			"oasisBW_Mediana.jpg
+			"oasisGaussianNoise.jpg
+			"oasisSNR.jpg
+			"oasisSaltAndPepper_.jpg
+			"plantasNoise.jpg
+			"plantasSNR.jpg
+			"plantas_gaussiana.jpg
+			"plantas_media.jpg
+			"plantas_mediana.jpg
+			"praia1Noise.jpg
+			"praia1SNR.jpg
+			"praia1_gaussiana.jpg
+			"praia1_media.jpg
+			"praia1_mediana.jpg
+			"rest.jpeg
+			"restBW_Gaussiano.jpg
+			"restBW_Noise.jpg
+			"restSNR.jpg
+			"tulipa.jpg
+			"tulipaBW_Gaussiano.jpg
+			"tulipaBW_SaltAndPepper.jpg
+			"tulipaSNR.jpg
+			"ufmaNoise.jpg
+			"ufmaSNR.jpg
+			"ufma_gaussiana.jpg
+			"ufma_media.jpg
+			"ufma_mediana.jpg
+			"veinBW_Gaussiano.png
+			"veinBW_SaltPepper.png
+			"veinSNR.jpg
+			"veinSaltAndPepper.png
+			"yachGaussian.jpg
+			"yachMedia.jpg
+			"yachMediana.jpg
+			"yachNoise.jpg
+			"yachSNR.jpg
+			
+	}
+	
+	
+}*/
+
+
+
 public static void exibeImagem() {
 	
-	String[] caminhos = baseImagens();
+	String[] nomeImagem = baseImagens();
 	
-	for (int i = 0;i<caminhos.length;i++) {
+	for (int i = 0;i<nomeImagem.length;i++) {
+		 long tempoInicial = System.currentTimeMillis();
 //		String nomeImagem = "amsBW_Noise.jpg";
-		String urlProcessada = "/home/alexsandro/Documents/"+caminhos[i];
-		float[][] imagemMatriz = converteImageToMatriz(urlProcessada);
+		String urlProcessadaMacOS = "/Users/alexsandrosaraiva/Desktop/pastaDocumentos/"+nomeImagem[i];
+//		String urlProcessada = "/home/alexsandro/Documents/"+caminhos[i];
+		float[][] imagemMatriz = converteImageToMatriz(urlProcessadaMacOS);
 		
-	    int raio = 3;
-	    float limiar =5.5f;
+	    int raio = 2;
+	    float limiar =1.0f;
 	    int taxaDeAnalise = 500;//tamanho da sub área de análise. 
 	    	float[][] matrizProcessada =  kRipleyFunction.remocaoDeRuidoBSD(imagemMatriz, raio, limiar, taxaDeAnalise);
-		    String descricao = caminhos[i]+"_raio_"+raio+"_MODAMASK_"+i+"_limiar_"+limiar+"_taxa de analise_"+taxaDeAnalise+"x";
+		    String descricao = nomeImagem[i]+"_raio_"+raio+"_FULL-SNR_"+i+"_limiar_"+limiar+"_taxa de analise_"+taxaDeAnalise+"x";
+		    
 			imagemSaida(matrizProcessada,descricao);	
+			long tempoFinal = System.currentTimeMillis();
+		      System.out.printf("A imagem acima demorou: %.2f ", ((tempoFinal - tempoInicial) / 1000d)/60);
 	}
 		    
 	  }
@@ -90,7 +172,7 @@ public static void imagemSaida(float[][] matriz, String descricao) {
 //    File output = new File("GrayScale_teste.jpg");
     File output = new File(nomeDoarquivo);
 		ImageIO.write(image, "jpg", output);
-		System.err.println("salvou a imagem");
+		System.err.println("\nsalvou a imagem :"+ descricao);
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -113,6 +195,19 @@ public static void salvaArqText(float[][] matriz, String descricao) {
 	}
 }
 
+
+public static void salvaArqTextResultadosTeste( String texto, String descricao) {
+	FileWriter arquivo;
+	try {
+		arquivo = new FileWriter(new File(descricao+".txt"));
+		arquivo.write(texto);
+		arquivo.close();
+	} catch (IOException e) {
+		e.printStackTrace();
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+}
 
 public static String geraNomeAleatorio() {
 	// Determia as letras que poderão estar presente nas chaves
@@ -153,47 +248,132 @@ public static String transformaMatrizToTxt(float[][] matrix) {
 
 public static void calculaErroQuadratico() {
 	
-//	String nomeImagemOriginal = "";
-	String urlOriginais = "/home/alexsandro/Documents/oasisBW.jpg";
-	float[][] imagemOriginal = converteImageToMatriz(urlOriginais);
+//	String[] caminhos = baseImagens();
 	
-	String urlProcessada = "/home/alexsandro/git/FiltroRuidos/imagensFinais/oasis_Final.jpg";
-//	String urlProcessada = "/home/alexsandro/Documents/oasisBW_Media.jpg";
-	float[][] imagemProcessada = converteImageToMatriz(urlProcessada);
-	int acertos=0;
-	int totalElementos = imagemOriginal.length*imagemOriginal[0].length;
-	float erroQuadratico=0.00f;
-	System.err.println("\nTotal de elementos:"+totalElementos);
-	for(int i = 0; i<imagemOriginal.length;i++) {
-    	for(int j = 0; j<imagemOriginal[0].length;j++) {
-    		if(imagemOriginal[i][j] == imagemProcessada[i][j]) {
-    			acertos++;
-//    			System.out.println("valor na original: "+imagemOriginal[i][j]+" Valor no process: "+imagemProcessada[i][j]);
-    		}else {
-//    			System.out.println("valor na original: "+imagemOriginal[i][j]+" Valor no process: "+imagemProcessada[i][j]);
-    		}
-    		
-    		erroQuadratico += Math.abs((imagemOriginal[i][j]-imagemProcessada[i][j]));
-    		
-    	}
-    		
-    }
 	
-	System.err.println("\nErro quadratico:"+erroQuadratico);
 	
-	System.err.println("\nErro quadratico pelo numero de elementos:"+Math.sqrt(erroQuadratico/totalElementos));
-	System.err.println("\nAcertos: "+acertos);
-	if(acertos>0) {
-		System.err.println(acertos);
-		float acuracia = acertos/totalElementos;
-		System.err.println("\nAcurácia de:"+acuracia);
-	}else {
-		System.err.println("\nErro igual a zero");
-	}
+//	for (int c = 0;c<caminhos.length;c++) {
+		
+		//diretório  Meus documetos  Linux SSP
+//		String urlOriginais = "/home/alexsandro/Documents/"+caminhos[c];
 	
+	
+	
+//	while(true) {
+	
+		
+		String urlProcessadaDocumentos = "/home/alexsandro/Documents/";
+		String urlOriginais = selectedImage();
+		float[][] imagemOriginal = converteImageToMatriz(urlOriginais);
+		
+		
+		//Caminho do diretorio de imagens Linux
+		String urlProcessadaFiltro = "/home/alexsandro/git/FiltroRuidos/imagensFinais";
+		
+		String results = "";
+		
+		//Caminho do diretório de imagens no Mac OS
+//		String urlProcessadaMac = "/Users/alexsandrosaraiva/Documents/workspace-sts/FiltroRuidos";
+		String urlProcessada = selectedImage();
+		float[][] imagemProcessada = converteImageToMatriz(urlProcessada);
+		int acertos=0;
+		int totalElementos = imagemOriginal.length*imagemOriginal[0].length;
+		float erroQuadratico=0.00f;
+		System.err.println("\nTotal de elementos:"+totalElementos);
+		for(int i = 0; i<imagemOriginal.length;i++) {
+	    	for(int j = 0; j<imagemOriginal[0].length;j++) {
+	    		if(imagemOriginal[i][j] == imagemProcessada[i][j]) {
+	    			acertos++;
+	//    			System.out.println("valor na original: "+imagemOriginal[i][j]+" Valor no process: "+imagemProcessada[i][j]);
+	    		}else {
+	//    			System.out.println("valor na original: "+imagemOriginal[i][j]+" Valor no process: "+imagemProcessada[i][j]);
+	    		}
+	    		
+	    		erroQuadratico += Math.abs((imagemOriginal[i][j]-imagemProcessada[i][j]));
+	    		
+	    	}
+	    		
+	    }
+		
+		System.err.println("\nErro quadratico:"+erroQuadratico);
+		float erroQudraticoMedio = erroQuadratico/totalElementos;
+		System.err.println("\nErro quadratico médio pelo numero de elementos:"+Math.sqrt(erroQuadratico));
+		System.err.println("\nAcertos: "+acertos);
+		
+		results = "Caminho da imagem:"+urlProcessada+"\nErro quadrático: "+erroQuadratico+"\nErro quadrático médio:"+
+		erroQudraticoMedio+"\nTotal de acertos: "+acertos;
+		
+		salvaArqTextResultadosTeste(results,urlProcessada);
+//		if(acertos>0) {
+//			System.err.println(acertos);
+//			float acuracia = acertos/totalElementos;
+//			System.err.println("\nAcurácia de:"+acuracia);
+//		}else {
+//			System.err.println("\nErro igual a zero");
+//		}
+//	}
 	
 }	
 
+
+
+/*public static void calculaErroQuadraticoAutomatizado() {
+	
+	FileWriter arquivo;
+	try {
+		arquivo = new FileWriter(new File(descricao+".txt"));
+		arquivo.write(textoQueSeraEscrito);
+		arquivo.close();
+	} catch (IOException e) {
+		e.printStackTrace();
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+		
+		String urlProcessadaDocumentos = "/home/alexsandro/Documents/";
+		String urlOriginais = selectedImage();
+		float[][] imagemOriginal = converteImageToMatriz(urlOriginais);
+		
+		
+		//Caminho do diretorio de imagens Linux
+		String urlProcessadaFiltro = "/home/alexsandro/git/FiltroRuidos/imagensFinais";
+		
+		String results = "";
+		
+		//Caminho do diretório de imagens no Mac OS
+//		String urlProcessadaMac = "/Users/alexsandrosaraiva/Documents/workspace-sts/FiltroRuidos";
+		String urlProcessada = selectedImage();
+		float[][] imagemProcessada = converteImageToMatriz(urlProcessada);
+		int acertos=0;
+		int totalElementos = imagemOriginal.length*imagemOriginal[0].length;
+		float erroQuadratico=0.00f;
+		System.err.println("\nTotal de elementos:"+totalElementos);
+		for(int i = 0; i<imagemOriginal.length;i++) {
+	    	for(int j = 0; j<imagemOriginal[0].length;j++) {
+	    		if(imagemOriginal[i][j] == imagemProcessada[i][j]) {
+	    			acertos++;
+	//    			System.out.println("valor na original: "+imagemOriginal[i][j]+" Valor no process: "+imagemProcessada[i][j]);
+	    		}else {
+	//    			System.out.println("valor na original: "+imagemOriginal[i][j]+" Valor no process: "+imagemProcessada[i][j]);
+	    		}
+	    		
+	    		erroQuadratico += Math.abs((imagemOriginal[i][j]-imagemProcessada[i][j]));
+	    		
+	    	}
+	    		
+	    }
+		
+		System.err.println("\nErro quadratico:"+erroQuadratico);
+		float erroQudraticoMedio = erroQuadratico/totalElementos;
+		System.err.println("\nErro quadratico médio pelo numero de elementos:"+Math.sqrt(erroQuadratico));
+		System.err.println("\nAcertos: "+acertos);
+		
+		results = "Caminho da imagem:"+urlProcessada+"\nErro quadrático: "+erroQuadratico+"\nErro quadrático médio:"+
+		erroQudraticoMedio+"\nTotal de acertos: "+acertos;
+		
+		salvaArqTextResultadosTeste(results,urlProcessada);
+	
+}	*/
 
 public static float[][] converteImageToMatriz(String url){
 	
@@ -230,6 +410,81 @@ public static float[][] converteImageToMatriz(String url){
 		
 }
 
+
+
+
+
+public static String selectedImage() {
+
+    JFileChooser fileChooser = new JFileChooser();
+    String caminho;
+//    File diretorio  = selectedDiretorio(url);
+//    File diretorio = new File( url);
+//    if (directory != null) {
+//        fileChooser.setCurrentDirectory(diretorio);
+//    }
+  
+//    FileFilter filter = new FileNameExtensionFilter("Arquivos suportados", "jpg ");
+//    fileChooser.setFileFilter(filter);
+    
+    
+    
+    
+    fileChooser.setDialogTitle("Selecione uma imagem");
+
+//    fileChooser.addChoosableFileFilter(filter);
+    fileChooser.showOpenDialog(new JFrame(""));
+    fileChooser.setVisible(true);
+
+//    caminho = new File(fileChooser.getCurrentDirectory().getAbsolutePath());
+    caminho = fileChooser.getSelectedFile().getAbsolutePath();
+    
+    System.err.println("\nCaminho da imagem: "+caminho);
+    return caminho;
+//    float[][] matrix = ReadTextFile(fileChooser.getSelectedFile().getAbsolutePath());
+//  
+
+}
+
+public static File selectedDiretorio(String url) {
+//
+//	JFileChooser fc = new JFileChooser();
+//    // restringe a amostra a diretorios apenas
+//    fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+//    int res = fc.showOpenDialog(null);
+//    if(res == JFileChooser.APPROVE_OPTION){
+//        File diretorio = fc.getSelectedFile();
+//        JOptionPane.showMessageDialog(null, "Voce escolheu o diretório: " + diretorio.getName());
+//    }
+//    else
+//        JOptionPane.showMessageDialog(null, "Voce nao selecionou nenhum diretorio.");
+//}
+//	
+	
+//    JFileChooser fileChooser = new JFileChooser();
+//    fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+    File diretorio;
+    
+    
+// FileFilter filter = new FileNameExtensionFilter("Arquivos suportados", "jpg ");
+//    fileChooser.setFileFilter(filter);
+//  fileChooser.setDialogTitle("Selecione um Diretorio");
+//
+//  fileChooser.addChoosableFileFilter(filter);
+//    fileChooser.showOpenDialog(new JFrame(""));
+//    fileChooser.setVisible(true);
+//
+//    diretorio = new File( fileChooser.getCurrentDirectory().getAbsolutePath());
+    System.err.println(url);
+    diretorio = new File( url);
+    System.out.println(diretorio.getName());
+    return diretorio;
+//    System.err.println("\nCaminho da imagem: "+caminho);
+    //return diretorio;
+//    float[][] matrix = ReadTextFile(fileChooser.getSelectedFile().getAbsolutePath());
+//  
+
+}
 
 }
 
