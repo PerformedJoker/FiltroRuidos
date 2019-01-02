@@ -1,0 +1,4 @@
+Caminho da imagem:/home/alexsandro/IMAGENSTESTE/restBW_Gaussiano.jpg
+Erro quadrático: 1.2880454E7
+Erro quadrático médio:20.12571
+Total de acertos: 9828

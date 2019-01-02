@@ -1,0 +1,4 @@
+Caminho da imagem:/home/alexsandro/IMAGENSTESTE/restBW_mediana.jpg
+Erro quadrático: 1388691.0
+Erro quadrático médio:2.1698296
+Total de acertos: 128026

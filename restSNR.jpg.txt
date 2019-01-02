@@ -1,0 +1,4 @@
+Caminho da imagem:/home/alexsandro/IMAGENSTESTE/restSNR.jpg
+Erro quadrático: 731518.0
+Erro quadrático médio:1.1429969
+Total de acertos: 346738

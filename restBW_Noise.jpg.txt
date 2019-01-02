@@ -1,0 +1,4 @@
+Caminho da imagem:/home/alexsandro/IMAGENSTESTE/restBW_Noise.jpg
+Erro quadrático: 6526935.0
+Erro quadrático médio:10.198336
+Total de acertos: 61212
