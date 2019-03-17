@@ -106,20 +106,26 @@ public static String[] baseImagensProcessadas() {
 
 public static void exibeImagem() {
 	
-	String[] nomeImagem = baseImagens();
+//	String[] nomeImagem = baseImagens();
 	
+	String caminho_artigo = "/home/alexsandro/Desktop/reartigoremooderudos";
+	
+	String[] nomeImagem = {caminho_artigo};
 	for (int i = 0;i<nomeImagem.length;i++) {
 		 long tempoInicial = System.currentTimeMillis();
-//		String nomeImagem = "amsBW_Noise.jpg";
-		String urlProcessadaMacOS = "/Users/alexsandrosaraiva/Desktop/pastaDocumentos/"+nomeImagem[i];
+		String tituloImagem = "ultrasound2.jpg";
+		 
+		 
+		 
+		//String urlProcessadaMacOS = "/Users/alexsandrosaraiva/Desktop/pastaDocumentos/"+nomeImagem[i];
 //		String urlProcessada = "/home/alexsandro/Documents/"+caminhos[i];
-		float[][] imagemMatriz = converteImageToMatriz(urlProcessadaMacOS);
+		float[][] imagemMatriz = converteImageToMatriz(caminho_artigo+"/"+tituloImagem);
 		
-	    int raio = 2;
+	    int raio = 1;
 	    float limiar =1.0f;
 	    int taxaDeAnalise = 500;//tamanho da sub área de análise. 
 	    	float[][] matrizProcessada =  kRipleyFunction.remocaoDeRuidoBSD(imagemMatriz, raio, limiar, taxaDeAnalise);
-		    String descricao = nomeImagem[i]+"_raio_"+raio+"_FULL-SNR_"+i+"_limiar_"+limiar+"_taxa de analise_"+taxaDeAnalise+"x";
+		    String descricao = tituloImagem+"_raio_"+raio+"_"+"_limiar_"+limiar;
 		    
 			imagemSaida(matrizProcessada,descricao);	
 			long tempoFinal = System.currentTimeMillis();

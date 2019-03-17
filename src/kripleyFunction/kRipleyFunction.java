@@ -19,19 +19,19 @@ public static float[][] remocaoDeRuidoBSD(float[][] matriz, int raio, float thre
 	
 	
 	//-----Aplicando-se uma mascara de moda para retirada do excesso de ruídos
-	for(int i = 0; i<matrizDePixels.length;i++) {
-		for(int j = 0; j<matrizDePixels[0].length;j++) {
-			if(matrizDePixels[i][j] <25 || matrizDePixels[i][j]>235){
-				
-//				System.err.println("VALOR DO PIXEL:"+matrizDePixels[i][j]);
-//			System.err.println(count++);
-//				System.out.println("valor de m[i][j]: "+matriz[i][j]+"\n limiar : "+threshold);
-//				System.out.println("\nMatriz auxiliar na iteração ["+i+"]["+j+"]");
-				matrizDePixels[i][j] = retornaModaDoElemento(matriz, raio, i, j);
-//				System.out.println("Moda do elemento: "+matrizDePixels[i][j]);
-			}
-		}
-	}
+//	for(int i = 0; i<matrizDePixels.length;i++) {
+//		for(int j = 0; j<matrizDePixels[0].length;j++) {
+//			if(matrizDePixels[i][j] <25 || matrizDePixels[i][j]>235){
+//				
+////				System.err.println("VALOR DO PIXEL:"+matrizDePixels[i][j]);
+////			System.err.println(count++);
+////				System.out.println("valor de m[i][j]: "+matriz[i][j]+"\n limiar : "+threshold);
+////				System.out.println("\nMatriz auxiliar na iteração ["+i+"]["+j+"]");
+//				matrizDePixels[i][j] = retornaModaDoElemento(matriz, raio, i, j);
+////				System.out.println("Moda do elemento: "+matrizDePixels[i][j]);
+//			}
+//		}
+//	}
 	
 	
 	float[][] matrizK = geraMatrizKripley(matrizDePixels, raio,taxaDeAnalise);
@@ -163,6 +163,7 @@ public static float[][] geraMatrizKripley(float[][] matriz, int raio, int taxaDe
 		for(int j = 0; j<matriz[0].length; j++) {
 //			System.out.println("j na funcao de gera matriz "+j);
 			matrizK[i][j] = convolucaoMask(matriz, raio, i, j,taxaDeAnalise);
+			System.out.println("Processando....\n");
 		}
 	}
 	
