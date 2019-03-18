@@ -92,13 +92,13 @@ public class main {
         
 //        long tempoInicial = System.currentTimeMillis();
 //        ImageController.baseImagens();
-        ImageController.exibeImagem();
+//        ImageController.exibeImagem();
 //        ImageController.selectedImage();
          
        // diretorio1 = ImageController.selectedDiretorio();
 		//diretorio2 = ImageController.selectedDiretorio();
        
-//        	ImageController.calculaErroQuadratico();
+        	ImageController.calculaErroQuadratico();
        
        
 //      long tempoFinal = System.currentTimeMillis();

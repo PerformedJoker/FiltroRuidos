@@ -113,7 +113,7 @@ public static void exibeImagem() {
 	String[] nomeImagem = {caminho_artigo};
 	for (int i = 0;i<nomeImagem.length;i++) {
 		 long tempoInicial = System.currentTimeMillis();
-		String tituloImagem = "ultrasound2.jpg";
+		String tituloImagem = "ultrasound1.jpg";
 		 
 		 
 		 
@@ -121,8 +121,8 @@ public static void exibeImagem() {
 //		String urlProcessada = "/home/alexsandro/Documents/"+caminhos[i];
 		float[][] imagemMatriz = converteImageToMatriz(caminho_artigo+"/"+tituloImagem);
 		
-	    int raio = 1;
-	    float limiar =1.0f;
+	    int raio = 2;
+	    float limiar =2.0f;
 	    int taxaDeAnalise = 500;//tamanho da sub área de análise. 
 	    	float[][] matrizProcessada =  kRipleyFunction.remocaoDeRuidoBSD(imagemMatriz, raio, limiar, taxaDeAnalise);
 		    String descricao = tituloImagem+"_raio_"+raio+"_"+"_limiar_"+limiar;
@@ -269,23 +269,28 @@ public static void calculaErroQuadratico() {
 	
 		
 		String urlProcessadaDocumentos = "/home/alexsandro/Documents/";
-		String urlOriginais = selectedImage();
-		float[][] imagemOriginal = converteImageToMatriz(urlOriginais);
-		
+//		String urlOriginais = selectedImage();
+//		float[][] imagemOriginal = converteImageToMatriz(urlOriginais);
+		float[][] imagemOriginal = converteImageToMatriz("/home/alexsandro/Desktop/reartigoremooderudos/padrao.jpg");
 		
 		//Caminho do diretorio de imagens Linux
-		String urlProcessadaFiltro = "/home/alexsandro/git/FiltroRuidos/imagensFinais";
+//		String urlProcessadaFiltro = "/home/alexsandro/git/FiltroRuidos/imagensFinais";
 		
 		String results = "";
 		
 		//Caminho do diretório de imagens no Mac OS
 //		String urlProcessadaMac = "/Users/alexsandrosaraiva/Documents/workspace-sts/FiltroRuidos";
-		String urlProcessada = selectedImage();
+//		String urlProcessada = "/home/alexsandro/Desktop/teste_artigo/padraocomruido.jpg_raio_2__limiar_2.0_.jpg";
+		
+		String urlProcessada = "/home/alexsandro/Desktop/reartigoremooderudos/padraocomruido.jpg";
+		
+		
 		float[][] imagemProcessada = converteImageToMatriz(urlProcessada);
 		int acertos=0;
 		int totalElementos = imagemOriginal.length*imagemOriginal[0].length;
 		float erroQuadratico=0.00f;
 		System.err.println("\nTotal de elementos:"+totalElementos);
+	
 		for(int i = 0; i<imagemOriginal.length;i++) {
 	    	for(int j = 0; j<imagemOriginal[0].length;j++) {
 	    		if(imagemOriginal[i][j] == imagemProcessada[i][j]) {
